@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Clientes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input, button {
+            margin: 5px 0;
+        }
+        .customer-card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        .address {
+            margin-top: 10px;
+            padding: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cadastro de Clientes</h1>
+    <form id="customerForm">
+        <label for="name">Nome:</label>
+        <input type="text" id="name" required><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" required><br>
+        <label for="gender">Gênero (M/F):</label>
+        <input type="text" id="gender" required><br>
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" required><br>
+        <button type="submit">Cadastrar Cliente</button>
+    </form>
+
+    <div id="customerDisplay"></div>
+
+    <script>
+        const apiBaseUrl = 'http://localhost:8080/customers'; // Substitua pelo URL da sua API
+
+        document.getElementById('customerForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const gender = document.getElementById('gender').value;
+            const cep = document.getElementById('cep').value;
+
+            const customerData = {
+                name: name,
+                email: email,
+                gender: gender,
+                enderecos: [
+                    {
+                        cep: cep
+                    }
+                ]
+            };
+
+            // Adiciona o cliente e o endereço ao servidor
+            fetch(apiBaseUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(customerData)
+            })
+            .then(response => response.json())
+            .then(customer => {
+                displayCustomer(customer);
+                clearForm();
+            })
+            .catch(error => console.error('Erro ao cadastrar cliente:', error));
+        });
+
+        function displayCustomer(customer) {
+            const displayDiv = document.getElementById('customerDisplay');
+            displayDiv.innerHTML = ''; // Limpa o conteúdo existente
+
+            const customerCard = document.createElement('div');
+            customerCard.className = 'customer-card';
+
+            customerCard.innerHTML = `
+                <h2>${customer.name}</h2>
+                <p>Email: ${customer.email}</p>
+                <p>Gênero: ${customer.gender}</p>
+                <div class="address">
+                    <h3>Endereços:</h3>
+                    ${customer.enderecos.map(addr => `
+                        <p>
+                            ${addr.logradouro}, ${addr.bairro}, ${addr.localidade} - ${addr.estado} (CEP: ${addr.cep})
+                        </p>
+                    `).join('')}
+                </div>
+            `;
+
+            displayDiv.appendChild(customerCard);
+        }
+
+        function clearForm() {
+            document.getElementById('customerForm').reset();
+        }
+    </script>
+</body>
+</html>

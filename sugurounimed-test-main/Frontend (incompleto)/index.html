@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Listagem de Clientes</title>
+</head>
+<body>
+    <h1>Listagem de Clientes</h1>
+    <ul id="customerList">
+        <!-- Lista de clientes será preenchida dinamicamente -->
+    </ul>
+    <script>
+        fetch('http://localhost:8080/customers')
+            .then(response => response.json())
+            .then(customers => {
+                const customerList = document.getElementById('customerList');
+                customers.forEach(customer => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${customer.name} - ${customer.email}`;
+                    customerList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Erro ao buscar clientes:', error));
+    </script>
+</body>
+</html>

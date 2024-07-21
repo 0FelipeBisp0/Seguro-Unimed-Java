@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cliente</title>
+</head>
+<body>
+    <h1>Editar Cliente</h1>
+    <form action="http://localhost:8080/customers/{id}" method="put">
+        <label for="id">ID do Cliente:</label>
+        <input type="number" id="id" name="id" required><br>
+        <label for="name">Nome:</label>
+        <input type="text" id="name" name="name"><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br>
+        <label for="gender">Gênero:</label>
+        <input type="text" id="gender" name="gender"><br>
+        <label for="cep">CEP:</label>
+        <input type="text" id="cep" name="enderecos[0].cep"><br>
+        <button type="submit">Salvar</button>
+    </form>
+</body>
+</html>
