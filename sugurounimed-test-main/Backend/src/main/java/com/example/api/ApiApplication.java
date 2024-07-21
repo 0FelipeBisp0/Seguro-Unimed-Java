@@ -81,6 +81,8 @@ public class ApiApplication implements CommandLineRunner {
 		}
 	}
 
+/*----------------------------------------- Listar Todos os Clientes -----------------------------------------------------*/
+
 	@Transactional(readOnly = true)
 	private void displayAllCustomers() {
 		List<Customer> customers = customerService.findAll();
@@ -219,6 +221,9 @@ public class ApiApplication implements CommandLineRunner {
 			System.out.println("Cliente não encontrado.");
 		}
 	}
+	
+/*---------------------------------------------- Deletar Cliente -----------------------------------------------------------*/
+
 		@Transactional
 	private void deleteCustomer(Scanner scanner) {
 		System.out.print("Digite o ID do cliente a ser excluído: ");
